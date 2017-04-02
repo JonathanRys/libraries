@@ -198,9 +198,8 @@ class Vector extends Matrix {
 
         if (this[MODE] === 'DEG') {
             return this.radToDeg(Math.acos(this.dotProduct(vector) / (this.getMagnitude() * vector.getMagnitude())));
-        } else if (this[MODE] === 'RAD') {
-            return Math.acos(this.dotProduct(vector) / (this.getMagnitude() * vector.getMagnitude()));
-        }
+        } 
+        return Math.acos(this.dotProduct(vector) / (this.getMagnitude() * vector.getMagnitude()));
     }
 
     getUnitVector() {
