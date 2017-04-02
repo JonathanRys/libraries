@@ -177,8 +177,8 @@ class Vector extends Matrix {
     dotProduct(matrix) {
         // find the dot product of two vectors
         if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix or Vector.');
-        let m = matrix.self;
-        return this.jointRecurse(this.self, m, function(a, b){return a * b;}).reduce(function(a, b){return a + b;});
+                
+        return this.jointRecurse(this.self, matrix.self, function(a, b){return a * b;}).reduce(function(a, b){return a + b;});
     }
     crossProduct(matrix) {
         // find the cross product of two vectors
