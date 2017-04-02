@@ -111,21 +111,7 @@ class Matrix {
     }
 
     transform(matrix) {
-        // multiply two matrices
-        // Determine if the two matrices are 2D, compatible,
-        if (this[NUM_DIMENSIONS] !== matrix[ROW_LENGTH]) throw new Error('Matrix mis-match: The matrix being multiplied must be ' + this[NUM_DIMENSIONS] + ' wide');
-        // Create a recursive function to loop through the elements in the new matrix and then through the other matrices accordingly
-
-        // This currently returns the diagonal matrix of the product matrix.
-        var hat = []
-        for (let i = 0; i < this[ROW_LENGTH]; i++) {
-            hat[i] = 0;
-            for (let j = 0; j < this[NUM_DIMENSIONS]; j ++) {
-                //console.log('hat[' + i + '][' + j + '] = ' + this.self[j][i] + ' * ' + matrix.self[i][j]);
-                hat[i] += this.self[j][i] * matrix.self[i][j]
-            }
-        }
-        return hat;
+        //
     }
 
     getDeterminant() {
