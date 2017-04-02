@@ -119,16 +119,11 @@ class Matrix {
     }
 
     getTrace() {
-        // return the trace of an n by n matrix
-        let trace = 0;
         // validate that the matrix is 2D and square
         if (!this.self[0][0] || this.self[0][0][0]) throw new Error('Matrix mis-match: The matrix must be a 2D matrix to find the trace.');
         if (this.self.length !== this.self[0].length) throw new Error('Matrix mis-match: The matrix must have the same length as width to find the trace.');
-
-        for (let i = 0; i < this.self.length; i++) {
-            trace += parseInt(this.self[i][i]);
-        }
-        return trace;
+        // return the trace of an n by n matrix
+        return this.self.map(function(mat, i) {return mat[i];}).reduce(function(a, b) {return a + b;});
     }
 
     getCharacteristicPolynomial() {
