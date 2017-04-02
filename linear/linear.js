@@ -1,6 +1,9 @@
+
+
 //Symbols for private vars
 const MODE = Symbol(),
       ROW_LENGTH = Symbol(),
+      ROW_HEIGHT = Symbol(),
       NUM_DIMENSIONS = Symbol();
 
 // Polyfills
@@ -15,6 +18,7 @@ class Matrix {
         this.self = [];
         this.argStack = [...arguments];
         this[ROW_LENGTH] = this.argStack.shift();
+        this[ROW_HEIGHT] = this.argStack[0];
         this[NUM_DIMENSIONS] = 1;
 
         for (let i = 0; i < this[ROW_LENGTH]; i++) {
@@ -25,6 +29,7 @@ class Matrix {
             this.self = this.extendMatrix(this.self, this.argStack.shift()); // Extend the matrix into all dimensions
             this[NUM_DIMENSIONS]++;
         }
+
     }
 
     // extend the matrix into the other dimensions
@@ -82,31 +87,32 @@ class Matrix {
         // add one matrix to another
         if (!(matrix instanceof Matrix)) throw new Error('Type error: add(Matrix) expects its argument to be an instance of Matrix.');
         if (this.length !== matrix.length) throw new Error('Matrix mis-match: The matrices must be of the same size in order to add them.');
+                
         return this.jointRecurse(this.self, matrix.self, function(a, b) {return a + b;});
     }
 
     subtract(matrix) {
         // subtract one matrix from another
-        return this.jointRecurse(this.self, matrix.self, function(a, b) {return a - b;});
+        return this.jointRecurse(this.self, matrix, function(a, b) {return a - b;});
     }
 
     multiply(matrix) {
         // multiply two matrices
         // Determine if the two matrices are 2D, compatible,
-        if (matrix.col[NUM_DIMENSIONS] !== this[ROW_LENGTH]) throw new Error('Matrix mis-match: The matrix being multiplied must be ' + matrix.col[NUM_DIMENSIONS] + ' wide');
+        if (matrix[ROW_HEIGHT] !== this[ROW_LENGTH]) throw new Error('Matrix mis-match: The matrix being multiplied must be ' + matrix[ROW_HEIGHT] + ' wide');
         // Create a recursive function to loop through the elements in the new matrix and then through the other matrices accordingly
 
         // This currently returns the diagonal matrix of the product matrix.
-        var result = new Matrix(matrix[ROW_LENGTH], this.col[NUM_DIMENSIONS]);
+        var result = new Matrix(matrix[ROW_LENGTH], this[ROW_HEIGHT]);
 
         for (let i = 0; i < this[ROW_LENGTH]; i++) {
-            for (let j = 0; j < this.col[NUM_DIMENSIONS]; j ++) {
+            for (let j = 0; j < this[ROW_HEIGHT]; j ++) {
                 for (let  k = 0; k < matrix[ROW_LENGTH]; k ++) {
                     result.self[k][j] += matrix.self[i][j] * this.self[k][i];
                 }
             }
         }
-        return result;
+        return result.self;
     }
 
     transform(matrix) {
@@ -122,7 +128,7 @@ class Matrix {
         if (!this.self[0][0] || this.self[0][0][0]) throw new Error('Matrix mis-match: The matrix must be a 2D matrix to find the trace.');
         if (this.self.length !== this.self[0].length) throw new Error('Matrix mis-match: The matrix must have the same length as width to find the trace.');
         // return the trace of an n by n matrix
-        return this.self.map(function(mx, i) {return mx[i];}).reduce(function(a, b) {return a + b;});
+        return this.self.map(function(mat, i) {return mat[i];}).reduce(function(a, b) {return a + b;});
     }
 
     getCharacteristicPolynomial() {
@@ -176,6 +182,7 @@ class Vector extends Matrix {
     dotProduct(matrix) {
         // find the dot product of two vectors
         if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix or Vector.');
+                
         return this.jointRecurse(this.self, matrix.self, function(a, b){return a * b;}).reduce(function(a, b){return a + b;});
     }
     crossProduct(matrix) {
@@ -193,6 +200,7 @@ class Vector extends Matrix {
     getAngle(vector) {
         // return the angle between the two vectors
         if (!(vector instanceof Vector)) throw new Error('Type error: getAngle(Vector) expects its argument to be an instance of Vector.');
+
         if (this[MODE] === 'DEG') {
             return this.radToDeg(Math.acos(this.dotProduct(vector) / (this.getMagnitude() * vector.getMagnitude())));
         } 
