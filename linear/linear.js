@@ -82,8 +82,8 @@ class Matrix {
         // add one matrix to another
         if (!(matrix instanceof Matrix)) throw new Error('Type error: add(Matrix) expects its argument to be an instance of Matrix.');
         if (this.length !== matrix.length) throw new Error('Matrix mis-match: The matrices must be of the same size in order to add them.');
-        let m = matrix.self;
-        return this.jointRecurse(this.self, m, function(a, b) {return a + b;});
+                
+        return this.jointRecurse(this.self, matrix.self, function(a, b) {return a + b;});
     }
 
     subtract(matrix) {
