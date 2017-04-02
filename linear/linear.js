@@ -195,14 +195,14 @@ class Vector extends Matrix {
     // Operations
     dotProduct(matrix) {
         // find the dot product of two vectors
-        if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix.');
+        if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix or Vector.');
         let m = matrix.self;
         return this.jointRecurse(this.self, m, function(a, b){return a * b;}).reduce(function(a, b){return a + b;});
     }
     crossProduct(matrix) {
         // find the cross product of two vectors
-        if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix.');
-
+        if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix or Vector.');
+        return this.getMagnitude() * matrix.getMagnitude() * Math.sin(this.getAngle(matrix));
     }
 
     // Getters
