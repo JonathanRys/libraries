@@ -82,13 +82,12 @@ class Matrix {
         // add one matrix to another
         if (!(matrix instanceof Matrix)) throw new Error('Type error: add(Matrix) expects its argument to be an instance of Matrix.');
         if (this.length !== matrix.length) throw new Error('Matrix mis-match: The matrices must be of the same size in order to add them.');
-                
         return this.jointRecurse(this.self, matrix.self, function(a, b) {return a + b;});
     }
 
     subtract(matrix) {
         // subtract one matrix from another
-        return this.jointRecurse(this.self, matrix, function(a, b) {return a - b;});
+        return this.jointRecurse(this.self, matrix.self, function(a, b) {return a - b;});
     }
 
     multiply(matrix) {
@@ -123,7 +122,7 @@ class Matrix {
         if (!this.self[0][0] || this.self[0][0][0]) throw new Error('Matrix mis-match: The matrix must be a 2D matrix to find the trace.');
         if (this.self.length !== this.self[0].length) throw new Error('Matrix mis-match: The matrix must have the same length as width to find the trace.');
         // return the trace of an n by n matrix
-        return this.self.map(function(mat, i) {return mat[i];}).reduce(function(a, b) {return a + b;});
+        return this.self.map(function(mx, i) {return mx[i];}).reduce(function(a, b) {return a + b;});
     }
 
     getCharacteristicPolynomial() {
@@ -177,7 +176,6 @@ class Vector extends Matrix {
     dotProduct(matrix) {
         // find the dot product of two vectors
         if (!(matrix instanceof Matrix) && !(matrix instanceof Vector)) throw new Error('Type error: dotProduct(Matrix) expects its argument to be an instance of Matrix or Vector.');
-                
         return this.jointRecurse(this.self, matrix.self, function(a, b){return a * b;}).reduce(function(a, b){return a + b;});
     }
     crossProduct(matrix) {
@@ -195,7 +193,6 @@ class Vector extends Matrix {
     getAngle(vector) {
         // return the angle between the two vectors
         if (!(vector instanceof Vector)) throw new Error('Type error: getAngle(Vector) expects its argument to be an instance of Vector.');
-
         if (this[MODE] === 'DEG') {
             return this.radToDeg(Math.acos(this.dotProduct(vector) / (this.getMagnitude() * vector.getMagnitude())));
         } 
