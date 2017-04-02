@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Matrix test</title>
+    </head>
+    <body>
+        <script src="linear.js"></script>
+        <script>
+
+        // Test Code
+        var test = new Matrix(4, 3, 2);
+        var test2 = new Matrix(4, 3, 2);
+        var test3 = new Vector(3);
+        var test4 = new Vector(3);
+        var tmp = new Matrix(4, 3, 2);
+
+        test.self = test.recurse(test.self, function(){return Math.floor(Math.random() * 10 + 1)});
+        test2.self = test2.recurse(test2.self, function(){return Math.floor(Math.random() * 10 + 1)});
+        test.print();
+        console.log('+');
+        test2.print();
+        tmp.self = test.add(test2);
+        console.log('=');
+        tmp.print();
+
+        console.log('\n');
+        test = new Matrix(3, 3);
+        test2 = new Matrix(3, 3);
+        test.self = test.recurse(test.self, function(){return Math.floor(Math.random() * 10 + 1)});
+        test2.self = test2.recurse(test2.self, function(){return Math.floor(Math.random() * 10 + 1)});
+        test.print();
+        console.log('*');
+        test2.print();
+        tmp.self = test2.multiply(test);
+        console.log('=');
+        tmp.print();
+
+        console.log('\n');
+        test3.self = test3.recurse(test3.self, function(){return Math.floor(Math.random() * 20 - 10)});
+        test4.self = test4.recurse(test4.self, function(){return Math.floor(Math.random() * 20 - 10)});
+        test3.print();
+        test4.print();
+        console.log('Magnitudes:', test3.getMagnitude(), test4.getMagnitude());
+        console.log('Unit vectors:', test3.getUnitVector(), test4.getUnitVector());
+        console.log('Direction (DEG):', test4.getAngle(test3) + String.fromCharCode(176));
+        test4.setMode('RAD');
+        console.log('Direction (RAD):', test4.getAngle(test3));
+
+        </script>
+    </body>
+</html>
