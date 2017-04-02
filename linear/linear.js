@@ -224,20 +224,3 @@ class Vector extends Matrix {
         this[MODE] = (mode && mode.toUpperCase() === 'RAD')? 'RAD': 'DEG';
     }
 }
-
-class Point extends Vector {
-    constructor() {
-        super(arguments.length);
-        for (let i = 0; i < arguments.length; i++) {
-            this.self[i] = arguments[i];
-        }
-    }
-}
-
-class Segment {
-    constructor(a, b) {
-        if (!(a instanceof Point) || !(b instanceof Point)) throw new Error('Type Error: Segment accepts two points.');
-        this.a = a;
-        this.b = b;
-    }
-}
